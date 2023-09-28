@@ -10,17 +10,18 @@ export async function POST(req: Request) {
   const signature = headers().get("Stripe-Signature") as string
 
   let event: Stripe.Event
+  const env = "whsec_bmeuz3JawNPZywr79sSXzBAG8HVt5AuF"
+   console.log(signature)
 
   try {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    )
+env    )
   } catch (error: any) {
     return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 })
   }
-
+  console.log(event)
   const session = event.data.object as Stripe.Checkout.Session;
   const address = session?.customer_details?.address;
 
